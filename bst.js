@@ -31,11 +31,32 @@ class Node {
   root: null
     }
   }
+
+
+  function buildTree(arr){
+    // first lets sort the tree..
+   let sorted = arr.sort((a,b) => {
+      return a-b
+    })
+
+    // now remove duplicates..
+    sorted.map((elem,ind,arr) => {
+      // if the index of the element, starting from the next index is not equal to -1 (not there), then remove that element!
+
+      if (arr.indexOf(elem, ind+1) != -1)
+      {
+        arr.splice(ind,1)
+      }
+    })
+
   
-  let me = new Tree()
-  console.log(me.root)
-  let see = tree()
-  console.log(see)
+    // our sorted and duplicate filtered array is now stored in sorted..
+    return sorted;
+    
+
+  }
+
+  console.log(buildTree([1,3,3,4,19,4,11,5]))
   
   
   const prettyPrint = (node, prefix = "", isLeft = true) => {
