@@ -45,6 +45,7 @@ class Node {
 
       if (arr.indexOf(elem, ind+1) != -1)
       {
+        // 
         arr.splice(ind,1)
       }
     })
@@ -52,11 +53,13 @@ class Node {
   
     // our sorted and duplicate filtered array is now stored in sorted..
     return sorted;
+
+    // we can now do things with this array..
     
 
   }
 
-  console.log(buildTree([1,3,3,4,19,4,11,5]))
+  console.log(buildTree([1,3,3,4,5,19,19,4,11,5]))
   
   
   const prettyPrint = (node, prefix = "", isLeft = true) => {
