@@ -13,24 +13,8 @@ class Node {
    right: right
   }
   } 
+
   
-  class Tree{
-    constructor(array) {
-      this.array = array;
-    }
-    root = 'dogs';
-    bed(){
-      return 'bed'
-    }
-  }
-  
-  
-  function tree(array) {
-    return {
-  array: array,
-  root: null
-    }
-  }
 
 
   function buildTree(arr){
@@ -50,11 +34,18 @@ class Node {
       }
     })
 
-  
+    let mid = Math.floor(sorted.length/2)
+    let left = sorted.slice(0,mid)
+    let right = sorted.slice(mid)
+    
+    console.log(mid,left,right)
+   let nextnode =  node(mid, left,right)
+    console.log(nextnode)
     // our sorted and duplicate filtered array is now stored in sorted..
 
 
     // we can now do things with this array..
+<<<<<<< HEAD
 
     if (arr.length < 2)
     {
@@ -85,6 +76,17 @@ class Node {
   }
 
   //console.log(buildTree([1,2,3,4]))
+=======
+  
+
+
+  }
+
+
+
+
+  console.log(buildTree([1,3,3,4,5,19,19,4,11,5]))
+>>>>>>> bf2fe775c4eee149b92793d2ad3901ba0352e1ae
   
   
   const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -99,9 +101,15 @@ class Node {
         prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
       }
     };
+<<<<<<< HEAD
   let root = buildTree([1,2,3,4,5,6,7,8,9,10]);
   //console.log(root.left, 'root')
 
 
 
   console.log(prettyPrint(root))
+=======
+  
+
+  
+>>>>>>> bf2fe775c4eee149b92793d2ad3901ba0352e1ae
