@@ -1,12 +1,5 @@
-class Node {
-  constructor(data, left,right){
-    this.data = data;
-    this.left = left;
-    this.right = right;
-  }
-}
 
-function node(data,left,right) {
+function node(data,left = null,right = null) {
 return {
  data: data,
  left: left,
@@ -14,23 +7,71 @@ return {
 }
 } 
 
-class Tree{
-  constructor(array) {
-    this.array = array;
-  }
-  root = 'dogs';
-  bed(){
-    return 'bed'
-  }
-}
-
 
 function tree(array) {
   return {
 array: array,
-root: null
+
+root: buildTree(array),
+
+print: function (node = this.root, prefix = "", isLeft = true)  {
+  if (node === null) {
+    return;
+  }
+  if (node.right !== null) {
+    this.print(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+  }
+  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+  if (node.left !== null) {
+    this.print(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+  }
+},
+insert: function(value, node = this.root)
+{
+
+
+  // look at the current node..
+  // if its equal to the value we want to insert, return as we don't need to do aything 
+  if (node.data == value) {
+    return 'same'
+  }
+  // otherwise
+  if (value > node.data)
+  {
+    console.log('greater', node.data)
+    // greater than current node call function one level to the right
+    if (!node.right) {
+   
+      node.right = value;
+      console.log(`input for greater to right of ${node.data}`)
+
+      
+    }
+
+    this.insert(value,node.right)
+  }
+  if (value < node.data)
+  {
+
+// less than current node, call function one level to the left..
+if (!node.left) {
+  console.log(`input for lesser to left of ${node.data}`)
+  node.left = value;
+
+}
+this.insert(value,node.left)
+
+  }
+
+
+
+}
+
+
   }
 }
+
+
 
 
 function buildTree(arr){
@@ -68,17 +109,25 @@ function buildTree(arr){
    }
    else {
     // otherwise we have an empty array, and must return null
+    // we set nodes 
     return node(null,null,null)
    }
   }
 
-
+// find the midpoint of thhe array, 
+// create the left side
+// and then the right (not including the mid element which will become the data note )
   let mid = Math.floor(arr.length/2)
   let left = arr.slice(0,mid)
 
   let right = arr.slice(mid+1)
   //console.log(left, 'left', right, 'right', mid, 'mid')
-
+  // for each call we return node, with the data equal to the midpoint of the current array..
+  // and the left tree will be equal to the next which is an node object again with data set to the middle
+  // of the tree and its left and right node set to further calls
+  // we only stop recursing when we pass an array with a length that is less than 2 which returns
+  // the data for the node, and null for the respective left right
+  // until we resolve to one of the base cases..
   return node(arr[mid], buildTree(left), buildTree(right))
   
 
@@ -99,9 +148,13 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
       prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
   };
-let root = buildTree([1,2,3,4,5,6,7,8,9,10]);
-//console.log(root.left, 'root')
 
 
 
-console.log(prettyPrint(root))
+
+//console.log(prettyPrint(tree([-10,-3,0,5,9]).root))
+//console.log(tree([1,2,3,4]))
+
+
+console.log(tree([-10,-3,0,5,9]).insert(6))
+console.log(tree([-10,-3,0,5,9]).print())
