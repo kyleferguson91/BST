@@ -26,50 +26,181 @@ print: function (node = this.root, prefix = "", isLeft = true)  {
     this.print(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
 },
-insert: function(value, node = this.root)
+
+
+insert: function(value, currentnode = this.root)
 {
 
+if (currentnode.data == value)
+{
+  return
+}
 
-  // look at the current node..
-  // if its equal to the value we want to insert, return as we don't need to do aything 
-  if (node.data == value) {
-    return 'same'
-  }
-  // otherwise
-  if (value > node.data)
+
+  if (value > currentnode.data)
   {
-    console.log('greater', node.data)
-    // greater than current node call function one level to the right
-    if (!node.right) {
-   
-      node.right = value;
-      console.log(`input for greater to right of ${node.data}`)
-
-      
+    // look to the right subtree
+    if (currentnode.right == null)
+    {
+      currentnode.right = node(value)
+    }
+    else {
+      this.insert(value, currentnode.right)
     }
 
-    this.insert(value,node.right)
+
   }
-  if (value < node.data)
+  if (value < currentnode.data)
   {
-
-// less than current node, call function one level to the left..
-if (!node.left) {
-  console.log(`input for lesser to left of ${node.data}`)
-  node.left = value;
-
-}
-this.insert(value,node.left)
-
-  }
-
-
-
-}
+    // look to the right subtree
+    if (currentnode.left == null)
+    {
+      currentnode.left = node(value)
+    }
+    else {
+      this.insert(value, currentnode.left)
+    }
 
 
   }
+
+},
+
+delete: function(value, currentnode = this.root, priornode  = this.root) 
+{
+
+if (!currentnode) {
+  console.log(value, 'not found for delete, returning')
+  return
 }
+
+  if (currentnode.data == value )
+  {
+    // we found a match for the value..
+    // we want to take care of case 1 here, for leaf nodes..
+    // both children are null, leaf node 
+    
+// this covers the case of deleting a leaf node..
+    if (currentnode.left == null && currentnode.right == null)
+{    if (value < priornode.data)
+    {
+
+      priornode.left = null
+    }
+    else if (value > priornode.data) {
+      
+      priornode.right = null
+    }
+}
+
+// next case 2 will check for presence of 1 child but not both..
+// if current node left is truthy, and current right falsy (reversed so true)
+// or current node left falsy (reversed to true) or current right truthy
+if (currentnode.left && !currentnode.right || !currentnode.left && currentnode.right )
+{
+  
+  // then do this/
+  // point the prior node to the child of 32..
+  if (currentnode.left) {
+    
+    // if the left side is the child do this
+    // check if that value is larger or smaller then the priornode data
+    // if smaller append to left of prior node
+    // if larger append to right of prior node
+    if (currentnode.left.data < priornode.data)
+    {
+      priornode.left = currentnode.left
+    }
+    else {
+      priornode.right = currentnode.left
+    }
+  }
+  if (currentnode.right) 
+  {
+   
+    // if the right side is the child do this
+    if (currentnode.right.data < priornode.data)
+    {
+      priornode.left = currentnode.right
+    }
+    else {
+      priornode.right = currentnode.right
+    }
+  }
+
+}
+
+
+// last case will keep track of nodes with 2 children!
+
+if (currentnode.left && currentnode.right)
+{
+
+  // find the thing that is next biggest from this value..
+  // we look in the right subtree.. 
+  // and find the thing in the far left of the right subtree..
+console.log('current delete w/ 2 children', currentnode.data, priornode.data, '<-- prior')
+
+// we want to move over to the right, and then all the way to the left..
+let tempnode = currentnode.right
+let priortotemp =  currentnode.right;
+
+// if the first node in the right has no children, then we cannot go
+// any further to the left..
+// so we set the current nodes right to be null 
+// ans swap the values
+if (!currentnode.right.left && !currentnode.right.right) 
+{
+  currentnode.right = null
+}
+
+do {
+
+  currentnode.data = tempnode.data
+if (!tempnode.left) {
+
+
+  priortotemp.left = null
+  break;
+}
+else {
+priortotemp = tempnode;
+
+  tempnode = tempnode.left
+}
+
+}
+while (tempnode)
+
+
+}
+
+  return
+  }
+   
+
+   if (value < currentnode.data)
+   {
+    priornode = currentnode
+    this.delete(value,currentnode.left,priornode )
+   }
+   else if (value > currentnode.data)
+   {
+    priornode = currentnode
+    this.delete(value, currentnode.right, priornode)
+   }
+
+
+},
+
+find: function(){
+
+},
+
+
+  }
+}
+
 
 
 
@@ -109,8 +240,17 @@ function buildTree(arr){
    }
    else {
     // otherwise we have an empty array, and must return null
-    // we set nodes 
-    return node(null,null,null)
+    // was getting a bug by returning an entire object with everything set to null
+    // which was messing things up..
+    //  as it went 
+    //  
+    // 
+    // 
+    // 
+    // 
+    // 
+    // 
+    return null
    }
   }
 
@@ -156,5 +296,15 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 //console.log(tree([1,2,3,4]))
 
 
-console.log(tree([-10,-3,0,5,9]).insert(6))
-console.log(tree([-10,-3,0,5,9]).print())
+let newtree = tree([-10,-3,0,5,6,7,8,9,10,11,12,13]);
+//console.log(newtree, 'newtree')
+console.log(newtree.print())
+//newtree.insert(12)
+//newtree.insert(13)
+//newtree.insert(15)
+//newtree.insert(16)
+newtree.delete(11)
+newtree.print()
+
+
+//console.log(tree([-10,-3,0,5,9]).print())
