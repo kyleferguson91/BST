@@ -193,10 +193,247 @@ while (tempnode)
 
 },
 
-find: function(){
+find: function(value, currentnode = this.root){
+// this function accepts a value and returns a node with given value 
+
+
+
+  // this condition will take care of the value not being in the tree
+  // we run this first so we don't get an error trying to read from a null node
+  if (!currentnode) 
+  {
+    console.log('value is not in the tree! Returning')
+    return;
+  }
+
+
+  // we will traverse the tree similar to how we have been..
+  // if we have found the value we are done, but if we reach null before finding the value
+  // we are done and could not find the value
+
+  if (currentnode.data == value)
+  {
+    console.log('found the value, returning', currentnode)
+    return currentnode;
+  }
+
+
+
+  // else we go deeper into the tree
+  if (value > currentnode.data)
+  {
+    // value is greater so must lie on right side..
+    this.find(value, currentnode.right)
+  }
+  else {
+    // else its lesser, lies on left side
+    this.find(value,currentnode.left)
+  }
+
 
 },
 
+levelorder: function(functionparam = null, currentnode = this.root, queue = [this.root], stored = []){
+
+
+// while the queue has something in it, do this
+while (queue.length != 0)
+{
+  // call the function on the current node.. if not null
+  if (functionparam) {
+    functionparam(currentnode)
+  }
+
+
+// log the data in the current node
+  // add it to the stored array..
+  stored.push(currentnode.data)
+
+// if currentnode has a left node, add it to the queue
+  if (currentnode.left)
+  {
+    queue.push(currentnode.left)
+  }
+  // if currentnode has a right node add it to the queue
+  if (currentnode.right) {
+    queue.push(currentnode.right)
+  }
+  // remove the current node we are working on..
+  queue.shift()
+  // call the function again until we reach the end of the queue
+  // at which point we return
+// if we never passed a function argument, call the function again without it
+
+
+ if (functionparam == null) 
+ {
+  //console.log('nofunct')
+  this.levelorder(null, queue[0], queue,stored)
+ }
+ // but if we did pass one, call the function again with currentnode..
+ else {
+
+
+  this.levelorder(functionparam, queue[0], queue,stored)
+ }
+
+}
+
+if (queue.length == 0 && functionparam == null)
+{
+  // once we reach end of queue, if no function provided return an array of values
+
+  return stored;
+
+}
+
+else {
+
+  // function has been provided this is the very end..
+
+  return 'function provided initially and passed'
+}
+
+
+},
+
+inorder: function(functionparam = null, currentnode = this.root, stored = []){
+//inorder is L D R - 
+// if left node exists go to left
+if (currentnode.left) 
+{
+this.inorder(functionparam,currentnode.left,stored)
+}
+// once no more left nodes exists read the data
+//console.log(currentnode.data)
+
+// yield node to function as long as it is not null
+
+if (functionparam) {
+  
+  functionparam(currentnode)
+}
+stored.push(currentnode.data)
+
+// if right node exists go to right
+if (currentnode.right) 
+{
+this.inorder(functionparam, currentnode.right,stored)
+}
+
+// at the end of all function calls we will either return an array or a function
+if (!functionparam) {
+  return stored
+}
+else {
+  return 'func provided'
+}
+
+},
+
+
+preorder:  function(functionparam = null, currentnode = this.root, stored = []){
+
+  // data, left, right
+// read the data in the node
+
+ // console.log(currentnode.data)
+  stored.push(currentnode.data)
+  if (functionparam) {
+    functionparam(currentnode)
+  }
+
+  // if left node exists go to left
+  if (currentnode.left) 
+  {
+  this.preorder(functionparam,currentnode.left, stored)
+  }
+
+  
+  // if right node exists go to right
+  if (currentnode.right) 
+  {
+  this.preorder(functionparam, currentnode.right,stored)
+  }
+  // when function is over, if we did not have a function that we were passing nodes into, return the array
+
+  if (!functionparam) {
+    return stored
+  }
+
+  },
+
+postorder:  function(functionparam = null, currentnode = this.root, stored = []){
+  //post order is LRD - 
+  // if left node exists go to left
+  if (currentnode.left) 
+  {
+  this.postorder(functionparam,currentnode.left,stored)
+  }
+
+  
+  // if right node exists go to right
+  if (currentnode.right) 
+  {
+  this.postorder(functionparam, currentnode.right, stored)
+  }
+    // once no more left nodes exists read the data
+   // console.log(currentnode.data)
+
+    stored.push(currentnode.data)
+    if (!functionparam) {
+      return stored
+    }
+    else {
+      functionparam(currentnode)
+    }
+  
+  },
+
+  height: function(node){
+    // accepts a node and returns its height
+    // height is number of edges in longest path from a given node to a leaf node 
+
+    // a leaf node is a node without a left or right child 
+    // whatever node we are on, check the height in its left subtree and right subtree and return the longer path
+    // we should store the amount for both a left path and right path, and return the larger of the two paths..
+
+let leftcount = 0;
+let rightcount = 0;
+let initalnode = node;
+// whatever the node is we want to go down the left path and down the right path until we reach a leaf node
+// for the left//
+
+// well check if there is a left child and right chil
+if (!node.left && !node.right) 
+{
+  // no left or right.. so we have passed in a leaf node
+  console.log('leaf node height 0')
+  return 0;
+}
+
+
+while (node)
+{
+console.log('whileloop', node)
+  node = node.left
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// console.log(leftcount, rightcount,'left right')
+  },
+
+  
 
   }
 }
@@ -296,15 +533,26 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 //console.log(tree([1,2,3,4]))
 
 
-let newtree = tree([-10,-3,0,5,6,7,8,9,10,11,12,13]);
+let newtree = tree([-10,-3,0,5,6,7,12]);
 //console.log(newtree, 'newtree')
+newtree.insert(-16)
+
 console.log(newtree.print())
 //newtree.insert(12)
 //newtree.insert(13)
 //newtree.insert(15)
-//newtree.insert(16)
-newtree.delete(11)
-newtree.print()
 
-
+//newtree.delete(11)
+//newtree.print()
+//newtree.find(-3)
+function printnode(currentnode) 
+{
+  console.log(currentnode.data, 'printnodecall')
+}
+//console.log(newtree.levelorder())
+//console.log(newtree.inorder())
+//console.log(newtree.preorder(printnode))
+//console.log(newtree.postorder(printnode))
 //console.log(tree([-10,-3,0,5,9]).print())
+
+console.log(newtree.height(newtree.root.left))
