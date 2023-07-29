@@ -397,6 +397,18 @@ postorder:  function(functionparam = null, currentnode = this.root, stored = [])
 // initial node
 if (!node) {return -1}
 
+
+// how do we find height
+// we compare the height in the left child and right child
+// well how do we have the height
+// we have a function for findind height ... this function!
+// we return the larger of the two heights 
+// and then add 1 for our current step, and continue down the longer path
+// we continue until we reach a null node (a leaf) at which point we can return
+
+
+
+
 //console.log(node.data)
 
 // how do we find the height..
@@ -447,11 +459,19 @@ return 1 + this.depth(node, currentnode.right)
 
     }
 
-console.log(node)
+
 
 
   },
-  
+  isbalanced: function(currentnode = this.root) {
+// The absolute difference of heights of left and right subtrees at any node is less than 1.
+// so compare height of each respective nodes at each level..
+
+  },
+
+
+
+  rebalance: function() {}
 
   }
 }
@@ -573,4 +593,5 @@ function printnode(currentnode)
 //console.log(newtree.postorder(printnode))
 //console.log(tree([-10,-3,0,5,9]).print())
 
-console.log(newtree.depth(newtree.root.left.left.left))
+//console.log(newtree.height(newtree.root.right.left  ))
+console.log(newtree.isbalanced())
