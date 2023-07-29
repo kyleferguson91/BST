@@ -391,48 +391,66 @@ postorder:  function(functionparam = null, currentnode = this.root, stored = [])
   },
 
   height: function(node){
-    // accepts a node and returns its height
-    // height is number of edges in longest path from a given node to a leaf node 
+    
+// Height is defined as the number of edges in longest path from a given node to a leaf node.
+// if we reach a leaf node, return -1, this helps us ensure we didn't count
+// initial node
+if (!node) {return -1}
 
-    // a leaf node is a node without a left or right child 
-    // whatever node we are on, check the height in its left subtree and right subtree and return the longer path
-    // we should store the amount for both a left path and right path, and return the larger of the two paths..
+//console.log(node.data)
 
-let leftcount = 0;
-let rightcount = 0;
-let initalnode = node;
-// whatever the node is we want to go down the left path and down the right path until we reach a leaf node
-// for the left//
+// how do we find the height..
+// we compare the longer of the two siddes
 
-// well check if there is a left child and right chil
-if (!node.left && !node.right) 
-{
-  // no left or right.. so we have passed in a leaf node
-  console.log('leaf node height 0')
-  return 0;
+// count the left side of the node
+if (this.height(node.left) >= this.height(node.right)) {
+  return 1 + this.height(node.left)
+}
+else {
+  return 1 + this.height(node.right)
 }
 
-
-while (node)
-{
-console.log('whileloop', node)
-  node = node.left
-}
+// cound the right side of the node
 
 
+// return the greater of the two sides
 
-
-
-
-
-
-
-
-
-
+ 
 // console.log(leftcount, rightcount,'left right')
   },
 
+  depth: function(node, currentnode = this.root)
+  {
+    // the depth of a node is the number of edges from the node to the trees root node..
+    // well it is not easy to go from a node back up to root node as we do not have the back link to it, but we can traverse from the root node to provided node and count the iterations..
+
+    if (node == this.root) {
+      return 0
+    }
+    if (currentnode == node) {
+      return 0;
+    }
+
+    else {
+       // else the node passed is not the root, we want to traverse from the root to the node and count how many times it takes..
+       
+       // compare the value
+       if (node.data < currentnode.data)
+       {
+        // if the value in the node is less than the root node it must lie to the left
+        return 1 + this.depth(node, currentnode.left)
+       }
+       else 
+       {
+return 1 + this.depth(node, currentnode.right)
+       }
+
+    }
+
+console.log(node)
+
+
+  },
   
 
   }
@@ -476,7 +494,7 @@ function buildTree(arr){
     return node(arr[0], null, null)
    }
    else {
-    // otherwise we have an empty array, and must return null
+    // otherwise we have an empty array (no values left to append to tree), and must return null
     // was getting a bug by returning an entire object with everything set to null
     // which was messing things up..
     //  as it went 
@@ -555,4 +573,4 @@ function printnode(currentnode)
 //console.log(newtree.postorder(printnode))
 //console.log(tree([-10,-3,0,5,9]).print())
 
-console.log(newtree.height(newtree.root.left))
+console.log(newtree.depth(newtree.root.left.left.left))
