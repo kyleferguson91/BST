@@ -463,10 +463,39 @@ return 1 + this.depth(node, currentnode.right)
 
 
   },
-  isbalanced: function(currentnode = this.root) {
-// The absolute difference of heights of left and right subtrees at any node is less than 1.
-// so compare height of each respective nodes at each level..
+  isbalanced: function(currentnode = this.root) 
+  {
 
+    // if we pass a null node, return
+    if (!currentnode) {return }
+    
+      // else look at the height of the left and right subtrees of this node
+let heightleft = this.height(currentnode.left)
+let heightright = this.height(currentnode.right)
+
+console.log(heightleft, heightright, currentnode.data)
+
+if (heightleft >= heightright)
+{
+  if (heightleft - heightright > 1) {
+    return false
+  }
+}
+else {
+  if (heightright - heightleft > 1){
+    return false
+  }
+}
+
+// if we have not reached a false yet, continue on to the next two nodes (if we pass a node that doesn't exist it will be returned above)
+// we will continue until we reach each null node
+// when all finally done we return true
+// we call isbalanced on the nodes, which will call is height for each node
+    this.isbalanced(currentnode.right), this.isbalanced(currentnode.left)
+    
+
+    // otherwise we reached the end, return true!
+return true
   },
 
 
@@ -574,11 +603,13 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 let newtree = tree([-10,-3,0,5,6,7,12]);
 //console.log(newtree, 'newtree')
 newtree.insert(-16)
+newtree.insert(13)
+newtree.insert(15)
+newtree.insert(17)
+newtree.insert(-14)
 
 console.log(newtree.print())
 //newtree.insert(12)
-//newtree.insert(13)
-//newtree.insert(15)
 
 //newtree.delete(11)
 //newtree.print()
