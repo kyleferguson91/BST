@@ -502,9 +502,10 @@ return true
 
   rebalance: function(currentnode = this.root, newarr=  []) {
 
-let balancedtree = tree( this.inorder())
+let balancedtree = tree( this.levelorder())
 
-  return balancedtree.print()
+
+  return balancedtree
 
 
   }
@@ -606,25 +607,25 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 //console.log(prettyPrint(tree([-10,-3,0,5,9]).root))
 //console.log(tree([1,2,3,4]))
 
-
-let newtree = tree([-10,-3,0,5,6,7,12]);
+//
+//let newtree = tree([-10,-3,0,5,6,7,12]);
 //console.log(newtree, 'newtree')
-//newtree.insert(-16)
-newtree.insert(13)
-newtree.insert(15)
-newtree.insert(17)
-newtree.insert(-14)
+////newtree.insert(-16)
+////newtree.insert(13)
+////newtree.insert(15)
+////newtree.insert(17)
+////newtree.insert(-14//)
 
-console.log(newtree.print())
+//console.log(newtree.print())
 //newtree.insert(12)
 
 //newtree.delete(11)
 //newtree.print()
-//newtree.find(-3)
-function printnode(currentnode) 
-{
-  console.log(currentnode.data, 'printnodecall')
-}
+////newtree.find(-3)
+//function printnode(currentnode) 
+//{
+//  console.log(currentnode.data, 'printnodecall')
+//}
 //console.log(newtree.levelorder())
 //console.log(newtree.inorder())
 //console.log(newtree.preorder(printnode))
@@ -632,5 +633,64 @@ function printnode(currentnode)
 //console.log(tree([-10,-3,0,5,9]).print())
 
 //console.log(newtree.height(newtree.root.right.left  ))
-console.log(newtree.isbalanced())
-console.log(newtree.rebalance())
+//console.log(newtree.isbalanced())
+//console.log(newtree.rebalance())
+
+
+
+function driverScript(){
+
+  let arr = []
+
+    // create an array of 100 numbers random
+  while (arr.length < 100)
+  {
+    let num = Math.floor(Math.random()*100)
+    if (arr.length % 2 == 0)
+    {
+      num *= -1
+    }
+    arr.push(num)
+  }
+
+ 
+// create a tree from this array 
+  let  newtree = tree(arr)
+  //newtree.print()
+
+  // confirm if tree is balanced
+  console.log(newtree.isbalanced(), 'tree balanced')
+
+  //print of level, pre post and inorder..
+
+  //console.log(newtree.levelorder(), 'levelorder', newtree.preorder(), 'preorder', newtree.inorder(), 'inorder', newtree.postorder(), 'postorder')
+
+  // unbalance the tree
+
+  let counter = 0
+  while (counter < 102)
+  {
+    let num = Math.ceil(Math.random()*100)
+    newtree.insert(num)
+    counter++
+  }
+
+//console.log(newtree.print())
+console.log(newtree.isbalanced(), 'tree balanced')
+
+// rebalance the tree, we set new tree equal to the balanced tree which returns a new tree 
+newtree = newtree.rebalance()
+
+
+// confirm tree is balanced
+console.log(newtree.isbalanced(), 'is balanced')
+
+newtree.print()
+
+console.log(newtree.levelorder(), 'levelorder', newtree.preorder(), 'preorder', newtree.inorder(), 'inorder', newtree.postorder(), 'postorder')
+
+
+}
+
+
+driverScript()
