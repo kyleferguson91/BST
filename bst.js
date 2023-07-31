@@ -473,7 +473,7 @@ return 1 + this.depth(node, currentnode.right)
 let heightleft = this.height(currentnode.left)
 let heightright = this.height(currentnode.right)
 
-console.log(heightleft, heightright, currentnode.data)
+//console.log(heightleft, heightright, currentnode.data)
 
 if (heightleft >= heightright)
 {
@@ -500,7 +500,14 @@ return true
 
 
 
-  rebalance: function() {}
+  rebalance: function(currentnode = this.root, newarr=  []) {
+
+let balancedtree = tree( this.inorder())
+
+  return balancedtree.print()
+
+
+  }
 
   }
 }
@@ -602,7 +609,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 let newtree = tree([-10,-3,0,5,6,7,12]);
 //console.log(newtree, 'newtree')
-newtree.insert(-16)
+//newtree.insert(-16)
 newtree.insert(13)
 newtree.insert(15)
 newtree.insert(17)
@@ -626,3 +633,4 @@ function printnode(currentnode)
 
 //console.log(newtree.height(newtree.root.right.left  ))
 console.log(newtree.isbalanced())
+console.log(newtree.rebalance())
