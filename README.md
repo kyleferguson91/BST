@@ -3,5 +3,4 @@
 Binary search tree functions
 
 ## Methods Within
-- `Test` - test the first function
-- `test2` - test 2
+Methods include, build tree, find node, add node, delete node, is tree balanced, in order, pre order and post order.
